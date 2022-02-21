@@ -15,7 +15,7 @@ class ProductController extends Controller
 
     /**
      * Product index action that shows product list
-     * 
+     *
      * @return void
      */
     public function indexAction(): void
@@ -25,7 +25,7 @@ class ProductController extends Controller
 
     /**
      * Product list action
-     * 
+     *
      * @return void
      */
     public function listAction(): void
@@ -33,10 +33,10 @@ class ProductController extends Controller
         $this->set('title', "Товари");
 
         $products = $this->getModel('Product')
-                ->initCollection()
-                ->sort($this->getSortParams())
-                ->getCollection()
-                ->select();
+            ->initCollection()
+            ->sort($this->getSortParams())
+            ->getCollection()
+            ->select();
         $this->set('products', $products);
 
         $this->renderLayout();
@@ -44,7 +44,7 @@ class ProductController extends Controller
 
     /**
      * Single product view action
-     * 
+     *
      * @return void
      */
     public function viewAction(): void
@@ -53,9 +53,9 @@ class ProductController extends Controller
 
         $product = $this->getModel('Product');
         $product->initCollection()
-                ->filter(['id', $this->getId()])
-                ->getCollection()
-                ->selectFirst();
+            ->filter(['id', $this->getId()])
+            ->getCollection()
+            ->selectFirst();
         $this->set('products', $product);
 
         $this->renderLayout();
@@ -63,7 +63,7 @@ class ProductController extends Controller
 
     /**
      * Shows product editing page
-     * 
+     *
      * @return void
      */
     public function editAction(): void
@@ -75,7 +75,7 @@ class ProductController extends Controller
         if ($id) {
             $values = $model->getPostValues();
             $this->set('saved', 1);
-            $model->saveItem($id, $values);
+            $model->saveItem((int)$id, $values);
         }
         $this->set('product', $model->getItem($this->getId()));
 
@@ -84,7 +84,7 @@ class ProductController extends Controller
 
     /**
      * Shows product add page
-     * 
+     *
      * @return void
      */
     public function addAction(): void
@@ -94,6 +94,24 @@ class ProductController extends Controller
         if ($values = $model->getPostValues()) {
             $model->addItem($values);
         }
+        $this->renderLayout();
+    }
+
+
+    /**
+     * Action for delete product
+     */
+    public function deleteAction()
+    {
+        $model = $this->getModel('Product');
+        $this->set("title", "Видалення товару");
+        $id = filter_input(INPUT_GET, 'id');
+        $delete = filter_input(INPUT_POST, 'submit');
+        if ($delete) {
+            $model->deleteItem((int)$id);
+            header("Location: /product/list");
+        }
+
         $this->renderLayout();
     }
 
@@ -145,7 +163,7 @@ class ProductController extends Controller
           }
          * 
          */
-        if ((int) filter_input(INPUT_GET, 'order') === 1) {
+        if ((int)filter_input(INPUT_GET, 'order') === 1) {
             $order = "DESC";
         } else {
             $order = "ASC";

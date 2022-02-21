@@ -35,6 +35,7 @@ foreach($products as $product)  :
         <p><?php if(!($product['qty'] > 0)) { echo 'Нема в наявності'; } ?></p>
         <p>
             <?= \Core\Url::getLink('/product/edit', 'Редагувати', array('id'=>$product['id'])); ?>
+            <span class="delete"><?= \Core\Url::getLink('/product/delete', '<p class="delete">Видалити</p>', array('id'=>$product['id'])); ?></span>
         </p>
     </div>
 <?php endforeach; ?>

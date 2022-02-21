@@ -12,3 +12,6 @@
     color: red;
     font-size: 22px;
 }
+.delete {
+    color: red !important;
+}
