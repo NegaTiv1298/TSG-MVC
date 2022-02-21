@@ -66,15 +66,28 @@ abstract class Model implements DbModelInterface
     }
 
     /**
+     * Sort products
      * @param $params
      * @return $this
      */
     public function sort($params)
     {
-        /*
-          TODO
-          return $this;
-         */
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                if ($key == 'price') {
+                    $priceSort = $value;
+                }
+                if ($key == 'qty') {
+                    $qtySort = $value;
+                }
+                if (isset($qtySort) && isset($priceSort)) {
+
+                    $sql = " ORDER BY price $priceSort, qty $qtySort";
+
+                    $this->sql .= $sql;
+                }
+            }
+        }
         return $this;
     }
 
